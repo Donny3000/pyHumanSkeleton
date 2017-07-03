@@ -23,6 +23,8 @@ tf.logging.set_verbosity(tf.logging.INFO)
 
 from math import sqrt
 
+root_folder = "/home/federico/NAS/HumanRecording/"
+
 def put_kernels_on_grid (kernel, pad = 1):
   '''Visualize conv. filters as an image (mostly for the 1st layer).
   Arranges filters into a grid, with some paddings between adjacent filters.
@@ -317,15 +319,14 @@ def main(unused_argv):
     train_data_final = []
     train_labels_final = []
 
-    train_filename_data="/media/inilabs/CA0CF5D70CF5BF0F/dataCNN/cam_3_test_data_2.npy"
-    #train_filename_data = "/home/inilabs/NAS/HumanRecording/DATApython/DATAformatedForTraining2/cam_3_test_data_2.npy"##"/home/inilabs/NAS/HumanRecording/DATApython/DATAformatedForTraining2/cam_3_train_data_"+str(person_name)+str(counter)+".npy"
-    train_filename_labels="/media/inilabs/CA0CF5D70CF5BF0F/dataCNN/cam_3_test_labels_2.npy"
-    #train_filename_labels = "/home/inilabs/NAS/HumanRecording/DATApython/DATAformatedForTraining2/cam_3_test_labels_2.npy"##"/home/inilabs/NAS/HumanRecording/DATApython/DATAformatedForTraining2/cam_3_train_labels_"+str(person_name)+str(counter)+".npy"
-    test_dat=np.load("/media/inilabs/CA0CF5D70CF5BF0F/dataCNN/cam_3_test_data_3.npy")
-    #test_dat=np.load("/home/inilabs/NAS/HumanRecording/DATApython/DATAformatedForTraining2/cam_3_test_data_3.npy")
-    test_lab=np.load("/media/inilabs/CA0CF5D70CF5BF0F/dataCNN/cam_3_test_labels_3.npy")
-    #test_lab=np.load("/home/inilabs/NAS/HumanRecording/DATApython/DATAformatedForTraining2/cam_3_test_labels_3.npy")
-    #testset=
+    train_filename_data= root_folder + "DATApython/DATAformatedForTraining2/cam_3_test_data_2.npy"
+
+    train_filename_labels= root_folder + "DATApython/DATAformatedForTraining2/cam_3_test_labels_2.npy"
+
+    test_dat=np.load(root_folder + "DATApython/DATAformatedForTraining2/cam_3_test_data_3.npy")
+
+    test_lab=np.load(root_folder + "DATApython/DATAformatedForTraining2/cam_3_test_labels_3.npy")
+
     print(train_filename_data)
     try:
        train_data = np.load(train_filename_data)

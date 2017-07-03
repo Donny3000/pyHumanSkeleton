@@ -12,12 +12,13 @@ import cv2
 ############################################
 ########### DATA FOR TRAINING
 ############################################
+root_folder = "/home/federico/NAS/HumanRecording/"
 
 def release_list(a):
   del a[:]
   del a
 
-list_person = "/home/inilabs/NAS/HumanRecording/DATApython/list_persons.npy"
+list_person = root_folder + "DATApython/list_persons.npy"
 list_persons=np.load(list_person)
 
 
@@ -25,8 +26,8 @@ print("start creating vectors...")
 for counter in range(0,100):
   train_data_final = []
   train_labels_final = []
-  np.save("/home/inilabs/NAS/HumanRecording/DATApython/DATAformatedForTraining/cam_3_train_data_"+str(counter)+".npy", train_data_final)
-  np.save("/home/inilabs/NAS/HumanRecording/DATApython/DATAformatedForTraining/cam_3_train_labels_"+str(counter)+".npy", train_labels_final)
+  np.save(root_folder + "DATApython/DATAformatedForTraining/cam_3_train_data_"+str(counter)+".npy", train_data_final)
+  np.save(root_folder + "DATApython/DATAformatedForTraining/cam_3_train_labels_"+str(counter)+".npy", train_labels_final)
   #release_list(train_data_final)
   #release_list(train_labels_final)
 print("done")
@@ -41,9 +42,9 @@ for person in range(len(list_persons)):
       # Load training and eval data
       print(session)
       try:
-        train_filename_data = "/home/inilabs/NAS/HumanRecording/DATApython/cam_3_train_X"+"_"+str(person_name)+"_"+"session"+str(session)+".npy"
+        train_filename_data = root_folder + "HumanRecording/DATApython/cam_3_train_X"+"_"+str(person_name)+"_"+"session"+str(session)+".npy"
         #print(train_filename_data)
-        train_filename_labels = "/home/inilabs/NAS/HumanRecording/DATApython/movements_id_train_Y"+"_"+str(person_name)+"_"+"session"+str(session)+".npy"
+        train_filename_labels = root_folder + "HumanRecording/DATApython/movements_id_train_Y"+"_"+str(person_name)+"_"+"session"+str(session)+".npy"
         
         #test_filename_data = "/home/inilabs/NAS/HumanRecording/DATApython/cam_3_test_X"+"_"+str(person_name)+"_"+"session"+str(session)+".npy"
         #test_filename_labels = "/home/inilabs/NAS/HumanRecording/DATApython/movements_id_test_Y"+"_"+str(person_name)+"_"+"session"+str(session)+".npy"
@@ -65,8 +66,8 @@ for person in range(len(list_persons)):
         print(int(0+counter*0.01*len(train_data)))
         print(int((counter+1)*0.01*len(train_data)))
         for index in range(int(0+counter*0.01*len(train_data)),int((counter+1)*0.01*len(train_data))):
-          filename_data = "/home/inilabs/NAS/HumanRecording/DATApython/DATAformatedForTraining/cam_3_train_data_"+str(counter)+".npy"
-          filename_labels = "/home/inilabs/NAS/HumanRecording/DATApython/DATAformatedForTraining/cam_3_test_labels_"+str(counter)+".npy"
+          filename_data = root_folder + "DATApython/DATAformatedForTraining/cam_3_train_data_"+str(counter)+".npy"
+          filename_labels = root_folder + "DATApython/DATAformatedForTraining/cam_3_test_labels_"+str(counter)+".npy"
           train_data_final = np.load(train_filename_data)
           train_labels_final = np.load(train_filename_labels)
 
@@ -74,5 +75,5 @@ for person in range(len(list_persons)):
           np.append(train_labels_final,train_labels[index])
           #print(train_data_final)
           #print(train_labels_final)
-          np.save("/home/inilabs/NAS/HumanRecording/DATApython/DATAformatedForTraining/cam_3_train_data_"+str(counter)+".npy", train_data_final)
-          np.save("/home/inilabs/NAS/HumanRecording/DATApython/DATAformatedForTraining/cam_3_test_labels_"+str(counter)+".npy", train_labels_final)
+          np.save(root_folder + "DATApython/DATAformatedForTraining/cam_3_train_data_"+str(counter)+".npy", train_data_final)
+          np.save(root_folder + "DATApython/DATAformatedForTraining/cam_3_test_labels_"+str(counter)+".npy", train_labels_final)
