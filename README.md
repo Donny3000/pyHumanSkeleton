@@ -12,6 +12,7 @@ The movX.avi contains frames with a fixed number of events, while the movX.xml c
 The movX.xml files contains labels for every frame in the movie. The labels are the average timestamp of the events, and a matrix of 13x3. This matrix represents the 3D position of  13 joints of the Human Skeleton. 
 Every row is the 3D position of head, shoulder right, shoulder left, elobow right, elbow left, hip right, hip left, hand right, hand left, knee right, knee left, foot right, and foot left.
 
+```xml
 <mov type_num="1.xml" type_id="opencv-matrix">
  <timestamp>1166521</timestamp>
   <rows>13</rows>
@@ -30,7 +31,8 @@ Every row is the 3D position of head, shoulder right, shoulder left, elobow righ
             76.007568 122.724083 144.655899 80.791191   
    </data>
 </mov>
-            
+```       
+
 Python Scripts: prepare data for training
 ------
 
