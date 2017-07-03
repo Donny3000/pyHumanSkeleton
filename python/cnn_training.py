@@ -23,6 +23,8 @@ tf.logging.set_verbosity(tf.logging.INFO)
 
 from math import sqrt
 
+tf.device("/cpu:0")	#cpu
+
 root_folder = "/home/federico/NAS/HumanRecording/"
 
 def put_kernels_on_grid (kernel, pad = 1):
@@ -319,13 +321,13 @@ def main(unused_argv):
     train_data_final = []
     train_labels_final = []
 
-    train_filename_data= root_folder + "DATApython/DATAformatedForTraining2/cam_3_test_data_2.npy"
+    train_filename_data = root_folder + "DATApython/DATAformatedForTraining2/cam_3_test_data_2.npy"
 
-    train_filename_labels= root_folder + "DATApython/DATAformatedForTraining2/cam_3_test_labels_2.npy"
+    train_filename_labels = root_folder + "DATApython/DATAformatedForTraining2/cam_3_test_labels_2.npy"
 
-    test_dat=np.load(root_folder + "DATApython/DATAformatedForTraining2/cam_3_test_data_3.npy")
+    test_dat = np.load(root_folder + "DATApython/DATAformatedForTraining2/cam_3_test_data_3.npy")
 
-    test_lab=np.load(root_folder + "DATApython/DATAformatedForTraining2/cam_3_test_labels_3.npy")
+    test_lab = np.load(root_folder + "DATApython/DATAformatedForTraining2/cam_3_test_labels_3.npy")
 
     print(train_filename_data)
     try:

@@ -17,7 +17,8 @@ import cv2
 #which_sessions_and_movement_name = {1:['leftarmabduction','rightarmabduction',3,4,5,6,7,8],2:[1,2,3,4,5,6],3:[1,2,3,4,5,6],4:[1,2,3,4,5,6],5:[1,2,3,4,5,6,7]}
 #which_sessions_and_movements_id = {1:[1,2,3,4,5,6,7,8],2:[1,2,3,4,5,6],3:[1,2,3,4,5,6],4:[1,2,3,4,5,6],5:[1,2,3,4,5,6,7]} # session starts from 1
 
-recordings_folder = "/home/inilabs/NAS/HumanRecording/Database/DVSwithVicon/"
+root_folder = "/home/federico/NAS/HumanRecording/"
+recordings_folder = root_folder + "Database/DVSwithVicon/"
 recordings_date = [f for f in listdir(recordings_folder) if isdir(join(recordings_folder, f))]
 # get the avaiable people 
 recordings_data_sessions = []
@@ -223,25 +224,25 @@ for this_person in range(len(sessions_folder)):
         #save processed data
         session_number=(all_sessions_this_person[this_session]).split("/")[::-1][0]
         person_name = (sessions_folder[this_person]).split("/")[::-1][0]
-        np.save("/home/inilabs/NAS/HumanRecording/DATApython/cam_1_train_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_1_f)
-        np.save("/home/inilabs/NAS/HumanRecording/DATApython/cam_1_test_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_1_y)
+        np.save(root_folder + "DATApython/cam_1_train_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_1_f)
+        np.save(root_folder + "DATApython/cam_1_test_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_1_y)
 
-        np.save("/home/inilabs/NAS/HumanRecording/DATApython/cam_2_train_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_2_f)
-        np.save("/home/inilabs/NAS/HumanRecording/DATApython/cam_2_test_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_2_y)
+        np.save(root_folder + "DATApython/cam_2_train_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_2_f)
+        np.save(root_folder + "DATApython/cam_2_test_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_2_y)
 
-        np.save("/home/inilabs/NAS/HumanRecording/DATApython/cam_3_train_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_3_f)
-        np.save("/home/inilabs/NAS/HumanRecording/DATApython/cam_3_test_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_3_y)
+        np.save(root_folder + "DATApython/cam_3_train_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_3_f)
+        np.save(root_folder + "DATApython/cam_3_test_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_3_y)
 
-        np.save("/home/inilabs/NAS/HumanRecording/DATApython/cam_4_train_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_4_f)
-        np.save("/home/inilabs/NAS/HumanRecording/DATApython/cam_4_test_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_4_y)
+        np.save(root_folder + "DATApython/cam_4_train_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_4_f)
+        np.save(root_folder + "DATApython/cam_4_test_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_4_y)
 	    
-        np.save("/home/inilabs/NAS/HumanRecording/DATApython/all_cams_train_X_"+str(person_name)+"_"+str(session_number)+".npy", all_cams_f)
-        np.save("/home/inilabs/NAS/HumanRecording/DATApython/all_cams_test_X_"+str(person_name)+"_"+str(session_number)+".npy", all_cams_y)
+        np.save(root_folder + "DATApython/all_cams_train_X_"+str(person_name)+"_"+str(session_number)+".npy", all_cams_f)
+        np.save(root_folder + "DATApython/all_cams_test_X_"+str(person_name)+"_"+str(session_number)+".npy", all_cams_y)
 	    
-        np.save("/home/inilabs/NAS/HumanRecording/DATApython/labels_train_Y_"+str(person_name)+"_"+str(session_number)+".npy", labels_train_Y)
-        np.save("/home/inilabs/NAS/HumanRecording/DATApython/labels_test_Y_"+str(person_name)+"_"+str(session_number)+".npy", labels_test_Y)
+        np.save(root_folder + "DATApython/labels_train_Y_"+str(person_name)+"_"+str(session_number)+".npy", labels_train_Y)
+        np.save(root_folder + "DATApython/labels_test_Y_"+str(person_name)+"_"+str(session_number)+".npy", labels_test_Y)
 
-        np.save("/home/inilabs/NAS/HumanRecording/DATApython/movements_id_train_Y_"+str(person_name)+"_"+str(session_number)+".npy", movements_id_train_Y)
-        np.save("/home/inilabs/NAS/HumanRecording/DATApython/movements_id_test_Y_"+str(person_name)+"_"+str(session_number)+".npy", movements_id_test_Y)
+        np.save(root_folder + "DATApython/movements_id_train_Y_"+str(person_name)+"_"+str(session_number)+".npy", movements_id_train_Y)
+        np.save(root_folder + "DATApython/movements_id_test_Y_"+str(person_name)+"_"+str(session_number)+".npy", movements_id_test_Y)
 
     #now make database for tensor flow
