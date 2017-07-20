@@ -23,7 +23,6 @@ tf.logging.set_verbosity(tf.logging.INFO)
 
 from math import sqrt
 
-tf.device("/cpu:0")	#cpu
 
 root_folder = "/home/federico/NAS/HumanRecording/"
 

@@ -6,16 +6,12 @@ from os import listdir
 from os.path import isfile, join, isdir
 import xml.etree.ElementTree as ET
 from scipy.misc import imread
-import random
+import random as rd
 import cv2
 
 ############################################
 ########### DATA LOADER
 ############################################
-
-# define protocol 
-#which_sessions_and_movement_name = {1:['leftarmabduction','rightarmabduction',3,4,5,6,7,8],2:[1,2,3,4,5,6],3:[1,2,3,4,5,6],4:[1,2,3,4,5,6],5:[1,2,3,4,5,6,7]}
-#which_sessions_and_movements_id = {1:[1,2,3,4,5,6,7,8],2:[1,2,3,4,5,6],3:[1,2,3,4,5,6],4:[1,2,3,4,5,6],5:[1,2,3,4,5,6,7]} # session starts from 1
 
 root_folder = "/home/federico/NAS/HumanRecording/"
 recordings_folder = root_folder + "Database/DVSwithVicon/"
@@ -47,7 +43,7 @@ def release_list(a):
    del a
 
 print("save the list of the subject")
-np.save("/home/inilabs/NAS/HumanRecording/DATApython/list_persons.npy",sessions_folder)
+np.save(root_folder + "DATApython/list_persons.npy",sessions_folder)
 
 #get movements
 for this_person in range(len(sessions_folder)):
@@ -80,8 +76,6 @@ for this_person in range(len(sessions_folder)):
         cam_3 = []
         cam_4 = []
         all_cams = []
-   
-
     
         dir_movements = sessions_folder[this_person] + "/"+str(all_sessions_this_person[this_session])
         #print(dir_movements)
@@ -92,9 +86,13 @@ for this_person in range(len(sessions_folder)):
         for this_mov in range(len(movements_id)): 
             if(movements_id[this_mov].endswith("avi")):
                 #add movements id
-                id_mov = int(str(all_sessions_this_person[this_session].strip('session'))+str(int(movements_id[this_mov].strip("mov").strip(".avi"))))
+                id_mov = int((str(all_sessions_this_person[this_session].strip('session'))+str(int(movements_id[this_mov].strip("mov").strip(".avi")))))
                 #grub images
                 video_file_name  = dir_movements + "/" + movements_id[this_mov]
+                print("Filename Video is")
+                print(video_file_name)
+                print("ID movement is")
+                print(id_mov) 
                 vidcap = cv2.VideoCapture(video_file_name)
                 if(not vidcap):
                     print("vidcap is empty")
@@ -149,32 +147,18 @@ for this_person in range(len(sessions_folder)):
 			 print("cam1 is empty")
 			 raise Exception
 
-	    # Training Data
-	    n_samples = np.shape(cam_1)[0]
-	    test_perc = 0.3
-	    test_num = int(np.floor(n_samples * 0.3))
-	    train_num = n_samples - test_num
-
-	    index_shuffle = random.sample(range(0, n_samples), n_samples)
-	    index_shuffle = np.reshape(index_shuffle,(len(index_shuffle)))
-
-        #print(n_samples)
-        #print(len(labels_flat))
-        #print(index_shuffle)
 	    #devide dataset in train and test
-        cam_1_s = [cam_1[i] for i in index_shuffle]
-        cam_2_s = [cam_2[i] for i in index_shuffle]
-        cam_3_s = [cam_3[i] for i in index_shuffle]
-        cam_4_s = [cam_4[i] for i in index_shuffle]
-        labels_flat = [labels_flat[i] for i in index_shuffle]
-        movements_id_db = [movements_id_db[i] for i in index_shuffle]
-        all_cams = [all_cams[i] for i in index_shuffle]
+        cam_1_s = [cam_1[i] for i in range(0,len(cam_1))]
+        cam_2_s = [cam_2[i] for i in range(0,len(cam_2))]
+        cam_3_s = [cam_3[i] for i in range(0,len(cam_3))]
+        cam_4_s = [cam_4[i] for i in range(0,len(cam_4))]
+        labels_flat = [labels_flat[i] for i in  range(0,len(labels_flat))]
+        movements_id_db = [movements_id_db[i] for i in  range(0,len(movements_id_db))]
+        all_cams = [all_cams[i] for i in  range(0,len(all_cams))]
 
-        train_X = {'cam_1': cam_1_s[0:train_num], 'cam_2': cam_2_s[0:train_num], 'cam_3': cam_3_s[0:train_num], 'cam_4': cam_4_s[0:train_num]}
-        train_Y = movements_id_db[0:train_num]
+        train_X = {'cam_1': cam_1_s, 'cam_2': cam_2_s, 'cam_3': cam_3_s, 'cam_4': cam_4_s}
+        train_Y = movements_id_db
 
-        test_X = {'cam_1': cam_1_s[train_num:train_num+test_num], 'cam_2': cam_2_s[train_num:train_num+test_num], 'cam_3': cam_3_s[train_num:train_num+test_num], 'cam_4': cam_4_s[train_num:train_num+test_num]}
-        test_Y = movements_id_db[train_num:train_num+test_num]
 
 	    #save processed data TRAIN
         print("Flattern Train Data..")
@@ -196,53 +180,50 @@ for this_person in range(len(sessions_folder)):
 
         print("Done.")
 
-	    #save processed data TEST
-        print("Flattern Test Data")
-        cam_1_y = np.zeros([len(test_X['cam_1']), 261*346])
-        cam_2_y = np.zeros([len(test_X['cam_2']), 261*346])
-        cam_3_y = np.zeros([len(test_X['cam_3']), 261*346])
-        cam_4_y = np.zeros([len(test_X['cam_4']), 261*346])
-        all_cams_y = np.zeros([len(test_X['cam_4']), 261*346*4])
-        for i in range(train_num,n_samples):
-		    lcam1 = np.shape(test_X['cam_1'][i-train_num])[0]*np.shape(train_X['cam_1'][i-train_num])[1]
-		    cam_1_y[i-train_num][0:lcam1]  = np.reshape(test_X['cam_1'][i-train_num], [lcam1])   
-		    lcam2 = np.shape(test_X['cam_2'][i-train_num])[0]*np.shape(train_X['cam_2'][i-train_num])[1] 
-		    cam_2_y[i-train_num][0:lcam2]  = np.reshape(test_X['cam_2'][i-train_num], [lcam2])
-		    lcam3 = np.shape(test_X['cam_3'][i-train_num])[0]*np.shape(train_X['cam_3'][i-train_num])[1]
-		    cam_3_y[i-train_num][0:lcam3]  = np.reshape(test_X['cam_3'][i-train_num], [lcam3])
-		    lcam4 = np.shape(test_X['cam_4'][i-train_num])[0]*np.shape(train_X['cam_4'][i-train_num])[1]
-		    cam_4_y[i-train_num][0:lcam4]  = np.reshape(test_X['cam_4'][i-train_num], [lcam4])
-		    all_cams_y[i-train_num][0:np.shape(all_cams[i-train_num])[0]*346*4] = np.reshape(all_cams[i-train_num], [np.shape(all_cams[i-train_num])[0]*346*4] )
 
-        print("Done.")
-        movements_id_train_Y = movements_id_db[0:train_num]
-        movements_id_test_Y = movements_id_db[train_num:n_samples]
+        movements_id_train_Y = movements_id_db
+        labels_train_Y = labels_flat
 
-        labels_train_Y = labels_flat[0:train_num]
-        labels_test_Y = labels_flat[train_num:n_samples]
-
-        #save processed data
-        session_number=(all_sessions_this_person[this_session]).split("/")[::-1][0]
+        #Raise Exception
+        #raise Exception
+        import matplotlib as plt
+        from pylab import *
+        
+        #make directory structure
+        import os
+        session_number = (all_sessions_this_person[this_session]).split("/")[::-1][0]
+        for this_mov in range(len(movements_id_train_Y)):
+            for this_cam in range(4):
+                directory = root_folder + "DATAImages/" + str(this_cam) + '/'+  str(movements_id_train_Y[this_mov])
+                if not os.path.exists(directory):
+                    os.makedirs(directory)
+        
+        #copy images in respective directory
+        import scipy.misc
         person_name = (sessions_folder[this_person]).split("/")[::-1][0]
-        np.save(root_folder + "DATApython/cam_1_train_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_1_f)
-        np.save(root_folder + "DATApython/cam_1_test_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_1_y)
+        counter = hash(rd.random())
+        for this_mov in range(len(movements_id_train_Y)):
+        
+            this_cam = 0 
+            directory = root_folder + "DATAImages/" + str(this_cam) + '/' + str(movements_id_train_Y[this_mov])
+            counter+=1;
+            scipy.misc.imsave(directory + '/' + person_name  + str(counter)+ '.jpg', cam_1_f[this_mov].reshape([261,346]))
 
-        np.save(root_folder + "DATApython/cam_2_train_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_2_f)
-        np.save(root_folder + "DATApython/cam_2_test_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_2_y)
+            this_cam = 1
+            directory = root_folder + "DATAImages/" + str(this_cam) + '/' + str(movements_id_train_Y[this_mov])
+            counter+=1;
+            scipy.misc.imsave(directory + '/' + person_name  + str(counter)+ '.jpg', cam_2_f[this_mov].reshape([261,346]))
 
-        np.save(root_folder + "DATApython/cam_3_train_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_3_f)
-        np.save(root_folder + "DATApython/cam_3_test_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_3_y)
+            this_cam = 2 
+            directory = root_folder + "DATAImages/" + str(this_cam) + '/' + str(movements_id_train_Y[this_mov])
+            counter+=1;
+            scipy.misc.imsave(directory + '/' + person_name  +str(counter)+ '.jpg', cam_3_f[this_mov].reshape([261,346]))
 
-        np.save(root_folder + "DATApython/cam_4_train_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_4_f)
-        np.save(root_folder + "DATApython/cam_4_test_X_"+str(person_name)+"_"+str(session_number)+".npy", cam_4_y)
-	    
-        np.save(root_folder + "DATApython/all_cams_train_X_"+str(person_name)+"_"+str(session_number)+".npy", all_cams_f)
-        np.save(root_folder + "DATApython/all_cams_test_X_"+str(person_name)+"_"+str(session_number)+".npy", all_cams_y)
-	    
-        np.save(root_folder + "DATApython/labels_train_Y_"+str(person_name)+"_"+str(session_number)+".npy", labels_train_Y)
-        np.save(root_folder + "DATApython/labels_test_Y_"+str(person_name)+"_"+str(session_number)+".npy", labels_test_Y)
+            this_cam = 3 
+            directory = root_folder + "DATAImages/"  + str(this_cam) + '/' + str(movements_id_train_Y[this_mov])
+            counter+=1;
+            scipy.misc.imsave(directory + '/'  + person_name  +str(counter)+ '.jpg', cam_4_f[this_mov].reshape([261,346]))
 
-        np.save(root_folder + "DATApython/movements_id_train_Y_"+str(person_name)+"_"+str(session_number)+".npy", movements_id_train_Y)
-        np.save(root_folder + "DATApython/movements_id_test_Y_"+str(person_name)+"_"+str(session_number)+".npy", movements_id_test_Y)
+   
 
-    #now make database for tensor flow
+

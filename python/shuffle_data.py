@@ -40,10 +40,10 @@ for person in range(len(list_persons)):
         #print(int(0.95*len(train_data_shuf)))
 
         if(test_data==[]):
-           test_data=train_data_shuf[int(0.2*len(train_data_shuf))-1:int(0.3*len(train_data_shuf))]
-           test_labls=train_labels_shuf[int(0.2*len(train_labels_shuf))-1:int(0.3*len(train_labels_shuf))]
+           test_data=train_data_shuf[int(0.1*len(train_data_shuf))-1:int(0.2*len(train_data_shuf))]
+           test_labls=train_labels_shuf[int(0.1*len(train_labels_shuf))-1:int(0.2*len(train_labels_shuf))]
         else:
-           test_data=np.append(test_data,train_data_shuf[int(0.2*len(train_data_shuf))-1:int(0.3*len(train_data_shuf))], axis=0)
-           test_labls=np.append(test_labls,train_labels_shuf[int(0.2*len(train_labels_shuf))-1:int(0.3*len(train_labels_shuf))], axis=0)
+           test_data=np.append(test_data,train_data_shuf[int(0.1*len(train_data_shuf))-1:int(0.2*len(train_data_shuf))], axis=0)
+           test_labls=np.append(test_labls,train_labels_shuf[int(0.1*len(train_labels_shuf))-1:int(0.2*len(train_labels_shuf))], axis=0)
 np.save(root_folder + "DATApython/DATAformatedForTraining2/cam_3_test_data_3.npy", test_data)
 np.save(root_folder + "DATApython/DATAformatedForTraining2/cam_3_test_labels_3.npy", test_labls)
